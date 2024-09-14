@@ -1,10 +1,14 @@
-import './App.css'
+import { GlobalStlye } from './GlobalStyles'
 import Home from './pages/Home/Home'
 
 
 function App() {
 return (
-  <Home />
+  <>
+    <GlobalStlye />
+    <Home />
+  </>
+ 
 )
 }
 
