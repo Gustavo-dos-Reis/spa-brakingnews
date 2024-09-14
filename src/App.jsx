@@ -1,15 +1,13 @@
-import { GlobalStlye } from './GlobalStyles'
-import Home from './pages/Home/Home'
-
+import { GlobalStyle } from './GlobalStyles';
+import Home from './pages/Home/Home';
 
 function App() {
-return (
-  <>
-    <GlobalStlye />
-    <Home />
-  </>
- 
-)
+  return (
+    <>
+      <GlobalStyle />
+      <Home />
+    </>
+  );
 }
 
-export default App
+export default App;
