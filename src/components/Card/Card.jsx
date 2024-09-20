@@ -1,41 +1,45 @@
 import PropTypes from 'prop-types';
-import { CardBody, CardContainer, CardFooter } from './CardStyled';
+import { CardBody, CardContainer, CardFooter, CardHeader } from './CardStyled';
 import { TextLimit } from '../TextLimit/TextLimit';
 
-export function Card({ title, text, banner, likes, comments }){
+export function Card(props){
    
 
     return (
         <CardContainer>
-            <CardBody>
+            <CardBody >
                 <div>
-                    <h2>{title}</h2>
-                    <img src={banner} alt="Image" />
+                <CardHeader top={props.top}>
+                    <h2>{props.title}</h2>
+                    <TextLimit text={props.text} limit={150} />
+                </CardHeader>
+                
+                    <CardFooter>
+                        <section>
+                            <i className="bi bi-hand-thumbs-up"></i>
+                            <span>{props.likes?.length}</span>
+                        </section>
+                        <section>
+                            <i className="bi bi-chat-left"></i>
+                            <span>{props.comments?.length}</span>
+                        </section>              
+                    </CardFooter>
                 </div>                
-                <p>{text}</p>
+                <img src={props.banner} alt="Image" />
             </CardBody>
             
-             <TextLimit text={text} limit={150} />
-            <CardFooter>
-                <div>
-                    <i className="bi bi-hand-thumbs-up"></i>
-                    <span>{likes}</span>
-                </div>
-                <div>
-                    <i className="bi bi-chat-left"></i>
-                    <span>{comments}</span>
-                </div>              
-            </CardFooter>
+            
+            
         </CardContainer>
     );
 }
 
-// Validação das props.
+// Validação das props
 Card.propTypes = {
-       
-        title: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
-        banner: PropTypes.string.isRequired,
-        likes: PropTypes.number.isRequired,
-        comments: PropTypes.number.isRequired,
+    top: PropTypes.string,
+    title: PropTypes.string,
+    text: PropTypes.string,
+    banner: PropTypes.string,
+    likes: PropTypes.array,
+    comments:PropTypes.array,
 }

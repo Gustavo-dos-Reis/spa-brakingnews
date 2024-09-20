@@ -1,27 +1,43 @@
-import { Card } from "../../components/Card/Card";
-import { Navbar } from "../../components/Navbar/Navbar";
-import { getAllPosts } from "../../services/postservices";
-import { HomeBody } from "./HomeStyled";
 import { useEffect, useState } from "react";
+
+import { Card } from "../../components/Card/Card";  
+
+import { getAllPosts, getTopPost } from "../../services/postServices"; 
+import { HomeBody, HomeHeader } from "./HomeStyled";
+
 
 export default function Home(){
 
-    let [news, setNews] = useState([]);
+    const [posts, setPosts] = useState([]); 
+    const [topPost, setTopPost] = useState({ });
 
-    async function findAllPosts(){
-        
-        const response = await getAllPosts();
-        setNews (response.data.results);
+    async function findPosts(){
+        const postsResponse = await getAllPosts();
+        setPosts(postsResponse.data.results);
+
+        const topPostResponse = await getTopPost();
+        setTopPost(topPostResponse.data.post);
     }
+
     useEffect(()=> {
-        findAllPosts();
+        findPosts();
     }, []);
+
 
     return (
         <>
-            <Navbar/>
+            <HomeHeader>
+            <Card 
+                top="true"
+                title={topPost.title}
+                text={topPost.text}
+                banner={topPost.banner}
+                likes={topPost.likes}
+                comments={topPost.comments}
+            />
+            </HomeHeader>
             <HomeBody>
-                {news.map((item) => (
+                {posts.map((item) => (
                     <Card 
                         key={item.id} 
                         title={item.title}
@@ -32,7 +48,6 @@ export default function Home(){
                     />
                 ))}  
             </HomeBody>
-            
         </>
-    )
+    );
 }
