@@ -30,7 +30,7 @@ export function Card({ title, text, banner, likes, comments }){
     );
 }
 
-// Validação das props
+// Validação das props.
 Card.propTypes = {
        
         title: PropTypes.string.isRequired,
