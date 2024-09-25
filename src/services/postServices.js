@@ -13,3 +13,9 @@ export function getTopPost(){
 
     return response;
 }
+
+export function searchPosts(title){
+    const response = axios.get(`${baseUrl}/posts/search?title=${title}`);
+
+    return response;
+}
