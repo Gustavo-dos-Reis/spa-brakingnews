@@ -57,27 +57,7 @@ export const InputSpace = styled.div`
         }
     }
 `
-export const Button = styled.button`
-    background-color: #f5f5f5;
-    border: none;
-    outline: none;
-    font-size: 1rem;
-    padding: 0.4rem 1rem;
-    color: #757575;
-    transition: 0.3s;
-    cursor: pointer;
-    border-radius: 0.3rem;
-    font-family: Roboto, arial;
-   /* width: 40%; */
-    font-weight: 500;
-    letter-spacing: 0.1rem; 
-    text-transform: uppercase;  
 
-    :hover {
-        background-color: #757575;
-        color: #f5f5f5;
-    }
-`;
 
 export const ErrorSpan = styled.span`
 background-color: #ffaeae;

@@ -14,7 +14,7 @@ export const ContainerResults = styled.section`
 
 export const SearchPosts = styled.div`
     display: grid;
-    grid-template-columns: repeat()(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-gap: 15px;
     margin: 1rem auto;
     width: 80%;
