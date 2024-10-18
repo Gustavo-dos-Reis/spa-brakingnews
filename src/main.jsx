@@ -1,38 +1,51 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Home from './pages/Home/Home.jsx'
-import { Navbar } from './components/Navbar/Navbar.jsx'
-import { Search } from './pages/Search/Search.jsx'
-import { GlobalStyle } from './GlobalStyles.jsx'
-import ErrorPage from './pages/ErrorPage/ErrorPage.jsx'
-import { Authentication } from './pages/Authentication/Authentication.jsx'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Navbar } from "./components/Navbar/Navbar";
+import Home from "./pages/Home/Home";
+import { Search } from "./pages/Search/Search";
+import { GlobalStyled } from "./GlobalStyles";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
+import { Authentication } from "./pages/Authentication/Authentication";
+import { Profile } from "./pages/Profile/Profile";
+import UserProvider from "./Context/UserContext";
+import { ManageNews } from "./pages/ManageNews/ManageNews";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navbar/>,
-    errorElement:<ErrorPage/> ,
+    element: <Navbar />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
-        element: <Home />
-      },{
+        element: <Home />,
+      },
+      {
         path: "/search/:title",
         element: <Search />,
-      }
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
+      {
+        path: "/manage-news/:action/:id",
+        element: <ManageNews />,
+      },
     ],
   },
   {
     path: "/auth",
-    element:<Authentication/>,
-  }
-])
+    element: <Authentication />,
+  },
+]);
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <GlobalStyle />
-    <RouterProvider router={router}/>
-  </StrictMode>,
-)
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <GlobalStyled />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
+  </React.StrictMode>
+);

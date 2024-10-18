@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 const baseURL = "http://localhost:3001";
 
-export function signup(data) {
+export async function signup(data) {
     delete data.confirmPassword;
     const body = {
         ...data,
@@ -11,16 +11,35 @@ export function signup(data) {
         avatar: "https://i.imgur.com/xmI2QAo.jpg",
         background: "https://i.imgur.com/XbRg9D7.png",
     };
-    const response = axios.post(`${baseURL}/user/create`, body);
-    return response;
+
+    try {
+        console.log("Enviando dados para o servidor:", body);
+        const response = await axios.post(`${baseURL}/user/create`, body);
+        return response;
+    } catch (error) {
+        console.error("Erro ao criar o usuário:", error.response?.data || error.message);
+        throw error;
+    }
 }
 
-export function signin(data) {
-const response = axios.post(`${baseURL}/auth/login`, data);
-return response;
+export async function signin(data) {
+    try {
+        const response = await axios.post(`${baseURL}/auth/login`, data);
+        return response;
+    } catch (error) {
+        console.error("Erro durante o login:", error.response?.data || error.message);
+        throw error; 
+    }
 }
 
 export function userLogged(){
+    const token = Cookies.get("token");
+
+    if (!token) {
+        console.error("Token de autenticação não encontrado.");
+        return Promise.reject("Token de autenticação não encontrado.");
+    }
+
     const response = axios.get(`${baseURL}/user/findById`,{
         headers: {
             Authorization:`Bearer ${Cookies.get("token")}`,
@@ -32,5 +51,5 @@ export function userLogged(){
 function generateUserName(name){
     const nameLowerCaseWithoutSpaces = name.replace(/\s/g, "").toLowerCase();
     const randomNumber = Math.floor(Math.random() * 1000);
-    return `${nameLowerCaseWithoutSpaces} -${randomNumber}`;
+    return `${nameLowerCaseWithoutSpaces}-${randomNumber}`;
 }
