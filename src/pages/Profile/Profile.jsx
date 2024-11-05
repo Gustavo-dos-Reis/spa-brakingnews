@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../Context/UserContext";
 import {
   ProfileActions,
-  ProfileAvatar,
   ProfileBackground,
   ProfileContainer,
   ProfileHeader,
@@ -14,6 +13,8 @@ import {
 import { getAllPostsByUser } from "../../services/postServices";
 import { Card } from "../../components/Card/Card";
 import { Link } from "react-router-dom";
+import UserProfileImage from '../../components/ProfileImage/UserProfileImage'; // Importação do componente
+
 
 export function Profile() {
   const { user } = useContext(UserContext);
@@ -38,7 +39,7 @@ export function Profile() {
         <ProfileBackground src={user.background} alt="" />
 
         <ProfileUser>
-          <ProfileAvatar src={user.avatar} alt="Foto do usuário" />
+          <UserProfileImage userImage={user.avatar} alt="Foto do usuário" />
           <h2>{user.name}</h2>
           <h3>@{user.username}</h3>
         </ProfileUser>

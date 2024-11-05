@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { DEFAULT_USER_AVATAR, DEFAULT_USER_BACKGROUND } from "../config";
 
 const baseURL = "http://localhost:3001";
 
@@ -8,8 +9,8 @@ export async function signup(data) {
     const body = {
         ...data,
         username: generateUserName(data.name),
-        avatar: "https://i.imgur.com/xmI2QAo.jpg",
-        background: "https://i.imgur.com/XbRg9D7.png",
+        avatar: DEFAULT_USER_AVATAR,
+        background: DEFAULT_USER_BACKGROUND,
     };
 
     try {
@@ -32,7 +33,7 @@ export async function signin(data) {
     }
 }
 
-export function userLogged(){
+export async function userLogged() {
     const token = Cookies.get("token");
 
     if (!token) {
@@ -40,15 +41,47 @@ export function userLogged(){
         return Promise.reject("Token de autenticação não encontrado.");
     }
 
-    const response = axios.get(`${baseURL}/user/findById`,{
-        headers: {
-            Authorization:`Bearer ${Cookies.get("token")}`,
-        }
-    });
-    return response;
+    try {
+        const response = await axios.get(`${baseURL}/user/findById`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        // Suponha que o ID do usuário está em response.data._id
+        const userId = response.data._id;
+        localStorage.setItem("userId", userId); // Armazene o ID para uso em updateUserProfile
+        return response;
+    } catch (error) {
+        console.error("Erro ao buscar dados do usuário:", error);
+        throw error;
+    }
 }
 
-function generateUserName(name){
+
+// Nova função para atualizar o perfil do usuário
+export async function updateUserProfile(data) {
+    const token = Cookies.get("token");
+    const userId = localStorage.getItem("userId");
+
+    if (!token || !userId) {
+        console.error("Token ou ID do usuário não encontrado.");
+        return Promise.reject("Token ou ID do usuário não encontrado.");
+    }
+
+    try {
+        const response = await axios.patch(`${baseURL}/user/update/${userId}`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response;
+    } catch (error) {
+        console.error("Erro ao atualizar o perfil do usuário:", error.response?.data || error.message);
+        throw error;
+    }
+}
+
+function generateUserName(name) {
     const nameLowerCaseWithoutSpaces = name.replace(/\s/g, "").toLowerCase();
     const randomNumber = Math.floor(Math.random() * 1000);
     return `${nameLowerCaseWithoutSpaces}-${randomNumber}`;
